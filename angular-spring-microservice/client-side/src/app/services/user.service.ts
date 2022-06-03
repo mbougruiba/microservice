@@ -14,7 +14,7 @@ export class UserService {
   private currentUserSubject: BehaviorSubject<User>;
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser') || '{}'));
     this.currentUser = this.currentUserSubject.asObservable();
    }
 
@@ -44,7 +44,7 @@ export class UserService {
      return this.http.post(API_URL + "logout", {}).pipe(
        map(response => {
          localStorage.removeItem('currentUser');
-         this.currentUserSubject.next(null);
+         this.currentUserSubject.next(null!);
        })
      );
    }
